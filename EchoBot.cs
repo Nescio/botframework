@@ -8,6 +8,7 @@ using Microsoft.Bot.Builder.Core.Extensions;
 using Microsoft.Bot.Schema;
 using System.IO;
 using Newtonsoft.Json;
+using System;
 
 namespace AspNetCore_EchoBot_With_State
 {
@@ -23,7 +24,7 @@ namespace AspNetCore_EchoBot_With_State
         /// for processing this conversation turn. </param>        
         public async Task OnTurn(ITurnContext context)
         {
-            
+
             // This bot is only handling Messages
             if (context.Activity.Type == ActivityTypes.Message)
             {
@@ -32,7 +33,7 @@ namespace AspNetCore_EchoBot_With_State
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
                 var s = new StringWriter();
-                ser.Serialize(s, context);
+                ser.Serialize(s, context.Activity);
                 var result = s.ToString();
 
                 // Get the conversation state from the turn context
@@ -43,10 +44,10 @@ namespace AspNetCore_EchoBot_With_State
 
                 // Echo back to the user whatever they typed.
                 //await context.SendActivity($"Yo {state.TurnCount}: You sent '{context.Activity.Text}'");
-                var reply = context.Activity.CreateReply(result);
+                var reply = context.Activity.CreateReply(result.Substring(0, Math.Min(result.Length, 4000)));
                 reply.TextFormat = "markdown";
 
-                await context.SendActivity(result);
+                await context.SendActivity(reply);
             }
         }
     }
