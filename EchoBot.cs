@@ -37,14 +37,12 @@ namespace AspNetCore_EchoBot_With_State
                 var result = s.ToString();
 
                 // Get the conversation state from the turn context
-                //var state = context.GetConversationState<EchoState>();
+                var state = context.GetConversationState<EchoState>();
 
                 // Bump the turn count. 
-                //state.TurnCount++;
+                state.TurnCount++;
 
-                // Echo back to the user whatever they typed.
-                //await context.SendActivity($"Yo {state.TurnCount}: You sent '{context.Activity.Text}'");
-                var reply = context.Activity.CreateReply(result.Substring(0, Math.Min(result.Length, 4000)));
+                var reply = context.Activity.CreateReply($"Hey **look** I know __markdown__ ~~sweet~~ `awesome`! (msg {state.TurnCount})");
                 reply.TextFormat = "markdown";
 
                 await context.SendActivity(reply);
