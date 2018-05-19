@@ -23,6 +23,7 @@ namespace AspNetCore_EchoBot_With_State
         /// for processing this conversation turn. </param>        
         public async Task OnTurn(ITurnContext context)
         {
+            
             // This bot is only handling Messages
             if (context.Activity.Type == ActivityTypes.Message)
             {
@@ -35,13 +36,15 @@ namespace AspNetCore_EchoBot_With_State
                 var result = s.ToString();
 
                 // Get the conversation state from the turn context
-                var state = context.GetConversationState<EchoState>();
+                //var state = context.GetConversationState<EchoState>();
 
                 // Bump the turn count. 
-                state.TurnCount++;
+                //state.TurnCount++;
 
                 // Echo back to the user whatever they typed.
                 //await context.SendActivity($"Yo {state.TurnCount}: You sent '{context.Activity.Text}'");
+                var reply = context.Activity.CreateReply(result);
+                reply.TextFormat = "markdown";
 
                 await context.SendActivity(result);
             }
