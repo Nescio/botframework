@@ -1,0 +1,15 @@
+{
+    "name": "botframework",
+    "description": "",
+    "secretKey": "",
+    "services": [
+        {
+            "appId": "",
+            "id": "fb924f00-5b6e-11e8-b97b-adbfdafd54be",
+            "type": "endpoint",
+            "appPassword": "",
+            "endpoint": "http://localhost:38861/api/messages",
+            "name": "http://localhost:38861/api/messages"
+        }
+    ]
+}

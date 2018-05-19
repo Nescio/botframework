@@ -6,6 +6,8 @@ using Microsoft.Bot;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Core.Extensions;
 using Microsoft.Bot.Schema;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace AspNetCore_EchoBot_With_State
 {
@@ -24,6 +26,14 @@ namespace AspNetCore_EchoBot_With_State
             // This bot is only handling Messages
             if (context.Activity.Type == ActivityTypes.Message)
             {
+                var ser = JsonSerializer.Create(new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                var s = new StringWriter();
+                ser.Serialize(s, context);
+                var result = s.ToString();
+
                 // Get the conversation state from the turn context
                 var state = context.GetConversationState<EchoState>();
 
@@ -31,8 +41,10 @@ namespace AspNetCore_EchoBot_With_State
                 state.TurnCount++;
 
                 // Echo back to the user whatever they typed.
-                await context.SendActivity($"Turn {state.TurnCount}: You sent '{context.Activity.Text}'");
+                //await context.SendActivity($"Yo {state.TurnCount}: You sent '{context.Activity.Text}'");
+
+                await context.SendActivity(result);
             }
         }
-    }    
+    }
 }
